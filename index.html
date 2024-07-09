@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Generative Image as Action Models">
+  <meta name="keywords" content="Diffusion, Image Generation, Behavior Cloning, Visuomotor">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GENIMA</title>
+
+
+  <script>
+    const multiSuccess = {
+       "genima": {
+         "basketball_in_hoop": 50.0,
+         "insert_usb_in_computer": 26.0,
+         "lamp_on": 12.0,
+         "move_hanger": 94.0,
+         "open_box": 79.3,
+         "open_door": 85.3,
+         "open_drawer": 77.3,
+         "open_grill": 48.7,
+         "open_microwave": 46.7,
+         "open_washing_machine": 46.0,
+         "open_window": 69.3,
+         "phone_on_base": 18.7,
+         "pick_up_cup": 36.0,
+         "play_jenga": 90.0,
+         "press_switch": 72.7,
+         "push_button": 76.7,
+         "put_books_on_bookshelf": 14.7,
+         "put_knife_on_chopping_board": 12.7,
+         "put_rubbish_in_bin": 26.7,
+         "scoop_with_spatula": 11.3,
+         "slide_block_to_target": 12.7,
+         "take_lid_off_saucepan": 48.0,
+         "take_plate_off_colored_dish_rack": 21.3,
+         "toilet_seat_up": 93.3,
+         "turn_tap": 71.3,
+       },
+       "act": {
+         "basketball_in_hoop": 32.7,
+         "insert_usb_in_computer": 18.0,
+         "lamp_on": 19.3,
+         "move_hanger": 42.0,
+         "open_box": 69.3,
+         "open_door": 75.3,
+         "open_drawer": 82.7,
+         "open_grill": 40.0,
+         "open_microwave": 22.6,
+         "open_washing_machine": 22.6,
+         "open_window": 8.0,
+         "phone_on_base": 13.3,
+         "pick_up_cup": 43.3,
+         "play_jenga": 99.3,
+         "press_switch": 65.3,
+         "push_button": 31.3,
+         "put_books_on_bookshelf": 44.0,
+         "put_knife_on_chopping_board": 14.7,
+         "put_rubbish_in_bin": 15.3,
+         "scoop_with_spatula": 22.7,
+         "slide_block_to_target": 22.0,
+         "take_lid_off_saucepan": 44.7,
+         "take_plate_off_colored_dish_rack": 37.3,
+         "toilet_seat_up": 45.3,
+         "turn_tap": 59.3,
+       },
+    }
+
+    function updateMultiVideo() {
+      var agent = document.getElementById("single-menu-agents").value;
+      var task = document.getElementById("single-menu-tasks").value;
+      var episode = document.getElementById("single-menu-epsiodes").value;
+
+      console.log("single", agent, task, episode)
+
+      var video = document.getElementById("multi-task-result-video");
+      video.src = "media/videos/sim/rollouts/" + 
+                  agent +
+                  "/" +
+                  task +
+                  "_" +
+                  "episode" +
+                  episode +
+                  ".mp4";
+      // video.playbackRate = 1.5;
+
+      var plot = document.getElementById("multi-task-result-plot");
+      plot.src = "media/plots/" +
+                 "genima" +
+                 "/" +
+                 "plot_" +
+                 task + 
+                 ".png";
+
+      var success_agent = document.getElementById("agent-name");
+      var success_rate = document.getElementById("success-percent");
+
+      if (agent === "genima") {
+        video.style.width = "120%";
+        plot.style.marginLeft = "-20px";
+        success_agent.textContent = "GENIMA";
+        success_rate.textContent = multiSuccess[agent][task];
+      } else {
+        video.style.width = "50%";
+        plot.style.marginLeft = "-230px";
+        success_agent.textContent = "ACT";
+        success_rate.textContent = multiSuccess[agent][task];
+      }
+      video.play();
+    }
+
+    function updatePerturbVideo() {
+      var agent = document.getElementById("perturb-menu-agents").value;
+      var type = document.getElementById("perturb-type").value;
+      var episode = document.getElementById("perturb-epsiodes").value;
+
+      console.log("perturb", agent, type, episode)
+
+      var video = document.getElementById("perturb-result-video");
+      video.src = "media/videos/sim/perturb/" + 
+                  type +
+                  "/" +
+                  agent +
+                  "/" +
+                  "episode" +
+                  episode +
+                  ".mp4";
+      console.log(video.src)
+      // video.playbackRate = 1.5;
+
+
+      if (agent === "genima") {
+        video.style.width = "80%";
+      } else {
+        video.style.width = "40%";
+      }
+      video.play();
+    }
+
+    var distrib = "seen"
+    function updateReal() {
+      var task = document.getElementById("real-menu-tasks").value;
+
+      var video = document.getElementById("real-result-video");
+      video.src = "media/videos/real/" + 
+                  distrib +
+                  "_" + 
+                  task + 
+                  ".mp4";
+      video.playbackRate = 3.0;
+
+      video.play();
+    }
+
+    function switchTab(event, tabName) {
+        // Remove the selected class from all tab links
+        var tablinks = document.getElementsByClassName("tablinks");
+        for (var i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("selected");
+        }
+
+        // Add the selected class to the clicked tab link
+        event.currentTarget.classList.add("selected");
+
+        // Add your code here to switch content if needed
+
+        var task = document.getElementById("real-menu-tasks").value;
+
+        var video = document.getElementById("real-result-video");
+        video.src = "media/videos/real/" + 
+                    tabName + 
+                    "_" +
+                    task + 
+                    ".mp4";
+        video.playbackRate = 3.0;
+        distrib = tabName
+
+        video.play();
+    }
+
+
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body onload="updateReal(); updateMultiVideo(); updatePerturbVideo();">
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Generative Image as Action Models</h1>
+          <h3 class="title is-4 conference-authors"><a target="_blank" href="https://www.robot-learning.org/">In submission to CoRL 2024</a></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</br>
+</br>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-fullhd">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-vcentered  is-centered">
+          <video id="teaser" autoplay muted loop width="300%">
+            <source src="media/videos/teaser_v1.mp4"
+                    type="video/mp4">
+          </video>
+          </br>
+        </div>
+        <br>
+        <h2 class="subtitle has-text-centered">
+        <span class="dgenima">Genima</span> is a behavior-cloning agent that fine-tunes Stable Diffusion to draw joint-actions
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Image-generation diffusion models have been fine-tuned to unlock new capabilities such as image-editing and novel view synthesis. Can we similarly unlock image-generation models for visuomotor control? 
+            We present <span class="dgenima">Genima</span>, a behavior-cloning agent that fine-tunes <a target="_blank" href="https://stability.ai/news/stability-ai-sdxl-turbo">Stable Diffusion</a> to <b><i>“draw joint-actions”</i></b> as targets on RGB images. These images are fed into a controller that maps the visual targets into a sequence of joint-positions. 
+          </p>
+          <p>
+            We study <span class="dgenima">Genima</span> on 25 <a target="_blank" href="https://sites.google.com/view/rlbench">RLBench</a> and 9 real-world manipulation tasks. We find that, by lifting actions into image-space, internet pre-trained diffusion models can generate policies that outperform state- of-the-art visuomotor approaches, especially in robustness to scene perturbations and generalizing to novel objects. Our method is also competitive with 3D agents, despite lacking priors such as depth, keypoints, or motion-planners.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+  </div>
+</section>
+
+
+<section class="section">
+
+
+  <!-- Paper video. -->
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-two-thirds">
+      <h2 class="title is-3">Video</h2>
+      <div class="publication-video">
+        <iframe src="https://www.youtube.com/embed/0MaLCvq6So0?rel=0&amp;showinfo=0"
+                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<section class="section">
+  <div class="container is-max-widescreen">
+
+    <div class="rows">
+
+
+    <!-- Animation. -->
+    <div class="rows is-centered ">
+      <div class="row is-full-width">
+        <h2 class="title is-3"><span class="dgenima">Genima</span></h2>
+
+        <!-- Interpolating. -->
+        <h3 class="title is-4">Fine-tuning Stable Diffusion to draw joint-actions</h3>
+        <div class="content has-text-justified">
+        <!-- <br> -->
+          <p>
+            <span class="dgenima">Genima</span> is a behavior-cloning agent that maps RGB observations and language goals to joint-position actions. <span class="dgenima">Genima</span> is composed of two-stages: (1) a diffusion agent that fine-tunes <a target="_blank" href="https://stability.ai/news/stability-ai-sdxl-turbo">SD-Turbo</a> with <a target="_blank" href="https://arxiv.org/abs/2302.05543">ControlNet</a> to draw target joint-positions. The joint-positions are <span class="latex">t+K</span> timsteps ahead, and each joint is <i>rendered</i> as a colored sphere: <span class="base">base</span>, <span class="elbow">elbow</span>, <span class="wrist">wrist</span>, gripper <span class="gripper-open">open</span> and <span class="gripper-close">close</span>. (2) These target images are fed into an <a target="_blank" href="https://github.com/tonyzhaozh/act">ACT-based</a> controller that maps visual targets into a sequence of <i><span class="latex">K</span></i> joint-position actions. The controller is trained with random backgrounds to ignore the context and just follow targets. 
+          </p>
+          </br>
+          <img src="media/figures/genima_overview.png" class="interpolation-image" 
+           alt="Interpolate start reference image." />
+          </br>
+          </br>
+          <p>
+            By lifting actions into image-space, we formulate action-generation as an image-generation problem. Since image-generation diffusion models are generalists in producing arbitrary visual-patterns, we fine-tune them to draw <i>action-patterns</i> for generalizable visuomotor learning.
+          </p>
+        </div>
+        <br>
+        <br>
+        <br>
+
+        <h2 class="title is-3">Results</h2>
+
+        <h3 class="title is-4">Simulation</h3>
+        For reproducible results, we benchmark <span class="dgenima">Genima</span> against state-of-the-art visuomotor approaches on 25 RLBench tasks. The videos below show evaluation rollouts with generated target images on the left, and object pose randomization (in training data, and evaluation episodes) on the right. 
+        </br>
+        </br>
+        </br>
+        <div class="columns">
+          <div class="column has-text-centered">
+            <h3 class="title is-5">Multi-task agent for 25 RLBench tasks</h3>
+
+            <div class="select is-small">
+              <select id="single-menu-agents" onchange="updateMultiVideo()">
+              <option value="genima" selected="selected"><span class="dgenima">GENIMA</span></option>
+              <option value="act">ACT</option>
+              </select>
+            </div>
+            trained with 50 demos per task, and evaluated on 
+            <div class="select is-small">     
+              <select id="single-menu-tasks" onchange="updateMultiVideo()">
+              <option value="basketball_in_hoop">basketball in hoop</option>
+              <option value="insert_usb_in_computer">insert usb</option>
+              <option value="move_hanger">move hanger</option>
+              <option value="open_box" selected="selected">open box</option>
+              <option value="open_door">open door</option>
+              <option value="open_drawer">open drawer</option>
+              <option value="open_grill">open grill</option>
+              <option value="open_microwave">open microwave</option>
+              <option value="open_washing_machine">open washer</option>
+              <option value="open_window">open window</option>
+              <option value="phone_on_base">phone on base</option>
+              <option value="pick_up_cup">pick up cup</option>
+              <option value="play_jenga">play jenga</option>
+              <option value="press_switch">press switch</option>
+              <option value="push_button">push button</option>
+              <option value="put_books_on_bookshelf">put books on shelf</option>
+              <option value="put_knife_on_chopping_board">put knife on board</option>
+              <option value="put_rubbish_in_bin">put rubbish in bin</option>
+              <option value="scoop_with_spatula">scoop with spatula</option>
+              <option value="slide_block_to_target">slide block</option>
+              <option value="take_lid_off_saucepan">take lid off</option>
+              <option value="take_plate_off_colored_dish_rack">take plate</option>
+              <option value="toilet_seat_up">toilet seat up</option>
+              <option value="lamp_on">turn on lamp</option>
+              <option value="turn_tap">turn tap</option>
+              </select>
+            </div>
+            episode
+            <div class="select is-small">
+              <select id="single-menu-epsiodes" onchange="updateMultiVideo()">
+              <option value="1" selected="selected">01</option>
+              <option value="2">02</option>
+              <option value="3">03</option>
+              <option value="4">04</option>
+              <option value="5">05</option>
+              <option value="6">06</option>
+              <option value="7">07</option>
+              <option value="8">08</option>
+              <option value="9">09</option>
+              <option value="10">10</option>
+              </select>
+            </div>
+            <br/>
+            <br/>
+
+          <div class="columns">
+            <div class="column is-9 has-text-centered">
+              <video id="multi-task-result-video"
+                     muted
+                     autoplay
+                     loop
+                     style="width:120%; margin-right: -60px; margin-left: -60px">
+                <source src="media/videos/sim/rollouts/genima/open_box_episode2.mp4"
+                        type="video/mp4">
+              </video>
+            </div>
+            <div class="column is-1 has-text-centered">
+              <img id="multi-task-result-plot" 
+                   src="media/plots/genima/plot_open_box.png" alt="a plot of training poses, succeses, and failures" 
+                   style="max-width: 580%; margin-top: 20px; margin-left: -20px">
+            </div>
+          </div>
+          <div id="success-rate">
+              <p><span id="agent-name">GENIMA</span> achieves a success rate of <b><span id="success-percent">79.3</span>%</b> on this task.</p>
+          </div>
+
+        </div>
+        </div>
+        </br>
+        </br>
+
+        <h3 class="title is-4">Real Tasks</h3>
+        We validate our sim results on 9 real tasks with 50 demos each. These are 7/9 tasks evaluated in both in-distrubtion and out-of-distribution settings.
+        </br>
+        </br>
+        </br>
+        <div class="columns">
+          <div class="column has-text-centered">
+            <h3 class="title is-5">Multi-task <span class="dgenima">Genima</span> for real-tasks</h3>
+
+            <div class="select is-small">
+              <select id="real-menu-tasks" onchange="updateReal()">
+              <option value="scarf" selected="selected">hang the scarf on the stand</option>
+              <option value="cup">flip the cup</option>
+              <option value="elbow">touch the button with your elbow</option>
+              <option value="saucepan">take the lid off the saucepan</option>
+              <option value="bag">lift the tranparent bag</option>
+              <option value="marker">put the highlighter in the mug</option>
+              <option value="book">slide the book and pick it up</option>
+              </select>
+            </div>
+            </br>
+            </br>
+            <div class="tabs is-toggle is-5 is-centered" id="policyTaskTabs">
+              <ul>
+                <li class="tablinks" id="clickDefault" onclick="switchTab(event, 'seen')"><a><b>In Distribution</b></a></li>
+                <li class="tablinks" onclick="switchTab(event, 'unseen')"><a><b>Out of Distribution</b></a></li>
+              </ul>
+            </div>
+
+          <div class="column has-text-centered">
+            <video id="real-result-video"
+                   muted
+                   autoplay
+                   loop
+                   style="width:80%;">
+              <source src="media/videos/real/seen_scarf.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
+        </div>
+        </br>
+        </br>
+
+        <h3 class="title is-4">Emergent Properties</h3>
+        We evaluate the same multi-task <span class="dgenima">Genima</span> and ACT agents on 6 pertubations tests from <a target="_blank" href="https://robot-colosseum.github.io/">Colosseum</a>. <span class="dgenima">Genima</span> exhibits an emergent property that reverts inputs to canonical textures and colors. This makes it robust to randomized object colors, lighting variations, distractors, and background textures.
+        </br>
+        </br>
+        </br>
+
+
+        <div class="columns">
+          <div class="column has-text-centered">
+            <h3 class="title is-5">6 Pertubation Tests</h3>
+
+            <div class="select is-small">
+              <select id="perturb-menu-agents" onchange="updatePerturbVideo()">
+              <option value="genima" selected="selected"><span class="dgenima">GENIMA</span></option>
+              <option value="act">ACT</option>
+              </select>
+            </div>
+            evaluated with 
+            <div class="select is-small">     
+              <select id="perturb-type" onchange="updatePerturbVideo()">
+              <option value="object_color" selected="selected">randomized object and part colors</option>
+              <option value="light">lighting variations</option>
+              <option value="distractor">distractor objects</option>
+              <option value="backgroundtex">randomized background texture</option>
+              <option value="tabletex">randomized table texture</option>
+              <option value="camerapose">randomized camera poses</option>
+              </select>
+            </div>
+            episode
+            <div class="select is-small">
+              <select id="perturb-epsiodes" onchange="updatePerturbVideo()">
+              <option value="1">01</option>
+              <option value="2">02</option>
+              <option value="3" selected="selected">03</option>
+              <option value="4">04</option>
+              <option value="5">05</option>
+              <option value="6">06</option>
+              <option value="7">07</option>
+              <option value="8">08</option>
+              <option value="9">09</option>
+              <option value="10">10</option>
+              </select>
+            </div>
+            <br/>
+            <br/>
+
+          <div class="column has-text-centered">
+            <video id="perturb-result-video"
+                   muted
+                   autoplay
+                   loop
+                   style="width:80%;">
+              <source src="media/videos/sim/perturb/object_color/genima/episode3.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content has-text-centered">
+          <p>
+            Website based on <a href="https://github.com/nerfies/nerfies.github.io">NeRFies</a>. 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>

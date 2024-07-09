@@ -1,0 +1,324 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff; 
+}
+
+.subtitle {
+   color: #ffffff; 
+}
+
+.title {
+  color: #ffffff; 
+}
+
+.footer {
+    color: #ffffff;
+    background-color: #000000;
+}
+
+.icon-link {
+    font-size: 25px;
+}
+
+.link-block a {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+.dgenima {
+  font-variant: small-caps;
+  /*font-size: 20px;*/
+}
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+}
+
+.teaser {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.teaser video {
+  object-fit: fill;
+  
+}
+#glass{
+  margin-left: -10px;
+}
+
+.publication-title {
+    color: #ffffff;
+}
+
+.publication-banner {
+  max-height: parent;
+
+}
+
+.publication-banner video {
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  object-fit: fit;
+}
+
+.publication-header .hero-body {
+}
+
+.publication-title {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-authors {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-venue {
+    color: #555;
+    width: fit-content;
+    font-weight: bold;
+}
+
+.publication-awards {
+    color: #ff3860;
+    width: fit-content;
+    font-weight: bolder;
+}
+
+.publication-authors {
+}
+
+.publication-authors a {
+   color: hsl(121, 100%, 36%) !important;
+}
+
+.conference-authors a {
+   color: #ffffff;
+}
+
+.publication-authors a:hover {
+    text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.publication-banner img {
+}
+
+.publication-authors {
+  /*color: #4286f4;*/
+}
+
+.publication-video {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+
+    overflow: hidden;
+    border-radius: 10px !important;
+}
+
+.publication-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.publication-body img {
+}
+
+.results-carousel {
+  overflow: hidden;
+}
+
+.results-carousel .item {
+  margin: 5px;
+  overflow: hidden;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+  padding: 0;
+  font-size: 0;
+}
+
+.results-carousel video {
+  margin: 0;
+}
+
+
+.interpolation-panel {
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.interpolation-panel .interpolation-image {
+  width: 100vh;
+  background-size: cover;
+  border-radius: 5px;
+}
+
+.interpolation-video-column {
+}
+
+.interpolation-panel .slider {
+  margin: 0 !important;
+}
+
+.interpolation-panel .slider {
+  margin: 0 !important;
+}
+
+#interpolation-image-wrapper {
+  width: 100%;
+}
+#interpolation-image-wrapper img {
+  border-radius: 5px;
+}
+
+#interpolation-image img {
+    padding: 0;
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
+} 
+
+ .dropdown-item{
+    white-space: pre-wrap;
+}  
+
+
+.justify {
+  text-align: justify;
+}
+
+
+a {
+  color: #ffffff; /* Normal link color */
+}
+
+a:visited {
+  color: #ffffff; /* Visited link color */
+}
+
+a:hover {
+  color: #ffffff; /* Hover link color */
+  text-decoration: underline; /* Adds underline on hover */
+}
+
+a:active {
+  color: #ffffff; /* Active link color */
+}
+
+.title {
+  color: #ffffff;
+}
+
+.content {
+  color: #ffffff;
+}
+
+
+.latex {
+  font-family: 'Latin Modern Math', 'Computer Modern', serif;
+  font-style: italic;
+  font-size: 19px;
+}
+
+.base {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: red;
+}
+.elbow {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: limegreen;
+}
+.wrist {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: orchid;
+}
+.gripper-open {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: cyan;
+}
+.gripper-close {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: yellow;
+}
+
+
+/* Apply styles to all select elements */
+select {
+    background-color: black;
+    color: white;
+    border: 1px solid white; /* Optional: Add a white border */
+}
+
+/* Apply styles to the options inside the select elements */
+select option {
+    background-color: black;
+    color: white;
+}
+
+/* Ensure styles apply to specific classes if needed */
+.select.is-small select {
+    background-color: black;
+    color: white;
+}
+
+.select.is-small select option {
+    background-color: black;
+    color: white;
+}
+
+.b {
+  color: white;
+}
+
+/* Default state for non-selected tabs */
+.tabs.is-toggle.is-5.is-centered .tablinks a b {
+    color: grey;
+}
+
+/* Change text color to black on hover for non-selected tabs */
+.tabs.is-toggle.is-5.is-centered .tablinks:not(.selected):hover a b {
+    color: black;
+}
+
+/* Change text color to white for selected tabs */
+.tabs.is-toggle.is-5.is-centered .tablinks.selected a b {
+    color: white;
+}
+
+/* Prevent hover effect on selected tabs */
+.tabs.is-toggle.is-5.is-centered .tablinks.selected:hover a b {
+    color: grey;
+}
+
+
+a {
+    color: violet;
+    text-decoration: none; /* Remove underline, optional */
+}
+
+a:hover {
+    color: magenta;
+    text-decoration: underline; /* Add underline on hover, optional */
+}
