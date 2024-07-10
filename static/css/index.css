@@ -30,6 +30,15 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 5px;
 }
 
+.navbar-link {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.navbar-item {
+  background-color: #000000;
+  color: #ffffff;
+}
 
 .dgenima {
   font-variant: small-caps;
