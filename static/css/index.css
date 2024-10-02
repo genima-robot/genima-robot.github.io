@@ -331,3 +331,18 @@ a:hover {
     color: magenta;
     text-decoration: underline; /* Add underline on hover, optional */
 }
+
+
+#BibTeX {
+  color: white; /* Makes the text color in the BibTeX section white */
+}
+
+#BibTeX pre {
+  background-color: black; /* Sets the background of the code block to black */
+  padding: 1em;
+}
+
+#BibTeX code {
+  color: white; /* Sets the color of the code text to gray */
+  font-family: "Courier New", Courier, monospace; /* Ensures monospaced font */
+}
